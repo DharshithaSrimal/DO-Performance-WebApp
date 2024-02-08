@@ -8,7 +8,6 @@ import { TableHead } from '@dhis2-ui/table';
 import { DataTableRow } from '@dhis2-ui/table';
 import { DataTableColumnHeader } from '@dhis2-ui/table';
 import { TableBody } from '@dhis2-ui/table';
-import { useDataQuery } from '@dhis2/app-runtime';
 import axios from 'axios';
 
 const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/qU1fqvtLn7e/data';
@@ -50,16 +49,22 @@ const MyApp = () => {
           <TableHead>
             <DataTableRow>
             <DataTableCell></DataTableCell>
-            <DataTableCell colSpan={3}>Registration and screening</DataTableCell>
+            <DataTableCell colSpan={2}>Registration and screening</DataTableCell>
             <DataTableCell colSpan={2}>Referral and clinic visits</DataTableCell>
+            <DataTableCell colSpan={6}>Follow-ups</DataTableCell>
             </DataTableRow>
             <DataTableRow>
                 <DataTableColumnHeader>Development Officer</DataTableColumnHeader>
                 <DataTableColumnHeader>Clients registered</DataTableColumnHeader>
-                <DataTableColumnHeader>Clients screened not at risk</DataTableColumnHeader>
                 <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
                 <DataTableColumnHeader>Clients referred</DataTableColumnHeader>
                 <DataTableColumnHeader>Clients not referred</DataTableColumnHeader>
+                <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
+                <DataTableColumnHeader>Screenings overdue</DataTableColumnHeader>
+                <DataTableColumnHeader>Phone calls due</DataTableColumnHeader>
+                <DataTableColumnHeader>Phone calls overdue</DataTableColumnHeader>
+                <DataTableColumnHeader>Home visits due</DataTableColumnHeader>
+                <DataTableColumnHeader>Home visits overdue</DataTableColumnHeader>
             </DataTableRow>
           </TableHead>
           <TableBody>
@@ -67,9 +72,14 @@ const MyApp = () => {
               <DataTableRow key={row[0]}>
                 <DataTableCell>{row[0]}</DataTableCell>
                 <DataTableCell>{row[1]}</DataTableCell>
-                <DataTableCell>{row[2]}</DataTableCell>
                 <DataTableCell>{row[3]}</DataTableCell>
                 <DataTableCell>{row[4]}</DataTableCell>
+                <DataTableCell>{row[5]}</DataTableCell>
+                <DataTableCell>{row[5]}</DataTableCell>
+                <DataTableCell>{row[5]}</DataTableCell>
+                <DataTableCell>{row[5]}</DataTableCell>
+                <DataTableCell>{row[5]}</DataTableCell>
+                <DataTableCell>{row[5]}</DataTableCell>
                 <DataTableCell>{row[5]}</DataTableCell>
               </DataTableRow>
             ))}
