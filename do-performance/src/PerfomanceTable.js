@@ -1,13 +1,74 @@
 import React, { useState, useEffect } from 'react';
-import { DataTable } from '@dhis2-ui/table';
-import { DataTableCell } from '@dhis2-ui/table';
-import { TableHead } from '@dhis2-ui/table';
-import { DataTableRow } from '@dhis2-ui/table';
-import { DataTableColumnHeader } from '@dhis2-ui/table';
-import { TableBody } from '@dhis2-ui/table';
+import { DataTable, DataTableCell, TableHead, DataTableRow, DataTableColumnHeader, TableBody } from '@dhis2-ui/table';
+import { SingleSelect, SingleSelectOption } from '@dhis2/ui';
+import { Button } from '@dhis2/ui'
+import { Field, Input } from '@dhis2/ui';
+const PerfomanceTable = ({ data }) => {
+  const [selectedFormat, setSelectedFormat] = useState(null);
+  
+  const handleDownload = (format) => {
+    setSelectedFormat(format);
+  };
 
-const PerfomanceTable = ({ data }) => (
-    <DataTable>
+  const onChange = (selectedOption) => {
+    if (selectedOption) {
+      handleDownload(selectedOption.value);
+    }
+  };
+
+  const onSingleSelectChange = (event) => {
+    if (event.selected) {
+      handleDownload(event.selected);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedFormat === 'pdf') {
+      generatePDF();
+    } else if (selectedFormat === 'excel') {
+      generateExcel();
+    }
+    // Reset selected format for the next selection
+    setSelectedFormat(null);
+  }, [selectedFormat]);
+
+  const generatePDF = () => {
+    // Implement your PDF generation logic using your data and formatting requirements
+    alert('PDF generation triggered!');
+  };
+
+  const generateExcel = () => {
+    // Implement your Excel generation logic using your data and formatting requirements
+    alert('Excel generation triggered!');
+  };
+  return (
+    <>
+    
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+      <table>
+        <tr>
+          <td>
+            <Field
+                helpText="Search Development Officer"
+                label="Development Officer">
+                <Input label="An input" name="input" onChange={onChange} />
+            </Field>
+          </td>
+          <td>
+            <SingleSelect label="Download" className="select" onChange={onSingleSelectChange}>
+              <SingleSelectOption label="PDF" value="pdf" id="pdf"/>
+              <SingleSelectOption label="Excel" value="excel" id="excel"/>
+            </SingleSelect>
+          </td>
+          <td>
+            <Button name="share" value="default"> Share </Button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+   
+      <DataTable>
             <TableHead>
               <DataTableRow>
               <DataTableCell></DataTableCell>
@@ -47,6 +108,8 @@ const PerfomanceTable = ({ data }) => (
               ))}
             </TableBody>
           </DataTable>
+    </>
   );
+};
 
   export default PerfomanceTable;

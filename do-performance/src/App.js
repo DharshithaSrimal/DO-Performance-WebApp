@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import i18n from '@dhis2/d2-i18n';
-import classes from './App.module.css';
-import { DataTable } from '@dhis2-ui/table';
-import { DataTableCell } from '@dhis2-ui/table';
-import { TableHead } from '@dhis2-ui/table';
-import { DataTableRow } from '@dhis2-ui/table';
-import { DataTableColumnHeader } from '@dhis2-ui/table';
-import { TableBody } from '@dhis2-ui/table';
 import axios from 'axios';
-import { Menu, MenuItem } from '@dhis2-ui/menu';
+import { FlyoutMenu, MenuItem } from '@dhis2-ui/menu';
 import PerfomanceTable from './PerfomanceTable';
+import Tasks from './Tasks';
 
-const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/qU1fqvtLn7e/data';
+const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/mb4ScGwNDBf/data';
 const username = 'admin';
 const password = 'district';
 
-const MyApp = () => {
+const DOPerformanceApp = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -47,10 +40,10 @@ const MyApp = () => {
 
   return (
     <main style={{ border: '1px solid grey', display: 'flex', height: '100%' }}>
-      <Menu activeItem={activeMenuItem}>
+      <FlyoutMenu activeItem={activeMenuItem}>
         <MenuItem onClick={() => handleMenuItemClick(1)} label="DO Performance" />
         <MenuItem onClick={() => handleMenuItemClick(2)} label="Tasks" />
-      </Menu>
+      </FlyoutMenu>
       <section
         style={{
           backgroundColor: '#f3ffff',
@@ -69,4 +62,4 @@ const MyApp = () => {
 
 
 
-export default MyApp;
+export default DOPerformanceApp;
