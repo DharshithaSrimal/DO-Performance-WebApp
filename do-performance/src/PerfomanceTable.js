@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable, DataTableCell, TableHead, DataTableRow, DataTableColumnHeader, TableBody } from '@dhis2-ui/table';
 import { SingleSelect, SingleSelectOption } from '@dhis2/ui';
-import { Button } from '@dhis2/ui';
-import { Field, Input } from '@dhis2/ui';
+import { Field, Input, Button } from '@dhis2/ui';
 
 const PerfomanceTable = ({ data }) => {
   const [selectedFormat, setSelectedFormat] = useState(null);
@@ -53,7 +52,7 @@ const PerfomanceTable = ({ data }) => {
 
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+      <div>
         <table>
           <tr>
             <td>
