@@ -5,9 +5,13 @@ import PerfomanceTable from './PerfomanceTable';
 import Tasks from './Tasks';
 import { Legend } from '@dhis2/ui';
 
-const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/mb4ScGwNDBf/data?criteria=created_by_code:admin';
-const personalAccessToken = 'd2pat_XmE7JK8hIAxIlbbyxrllYMIwR0ExyOsD4033580229';
-const userDetais = 'http://localhost:8084/dhis/api/me';
+//const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/mb4ScGwNDBf/data?criteria=created_by_code:admin';
+const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/GB4zoRiLoor/data';
+const personalAccessToken = 'd2pat_YIzNjxr9tnNwx8Mda0wFexze1xoBP5bR0679556158';
+const getUserIdFromSession = () => {
+  const userId = localStorage.getItem('dhis2.latestUser');
+  return userId;
+};
 
 const DOPerformanceApp = () => {
   const [data, setData] = useState(null);
@@ -19,20 +23,24 @@ const DOPerformanceApp = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const userId = getUserIdFromSession();
+        const userDetais = 'http://localhost:8084/dhis/api/users/'+userId;
+        console.log(userDetais);
         const [response1, response2] = await Promise.all([
           axios.get(userDetais, {
-            headers: {
-              Authorization: personalAccessToken,
+            auth: {
+              username: 'admin',
+              password: 'district'
             },
           }),
           axios.get(serverUrl, {
-            headers: {
-              Authorization: personalAccessToken,
+            auth: {
+              username: 'admin',
+              password: 'district'
             },
           }),
         ]);
         setUserData(response1.data);
-        console.log('aaabb'+response1.data);
         setData(response2.data.listGrid.rows);
 
       } catch (error) {
@@ -63,10 +71,10 @@ const DOPerformanceApp = () => {
           padding: 20,
         }}>
           <table>
-            <tr><td><Legend>Divisional Secretariat:</Legend></td><td></td></tr>
-            <tr><td><Legend>Period:</Legend></td><td></td></tr>
-            <tr><td><Legend>Date start:</Legend></td><td></td></tr>
-            <tr><td><Legend>Period end:</Legend></td><td></td></tr>
+            <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>: Kalutara DSD</Legend></td></tr>
+            <tr><td><Legend>Period</Legend></td><td><Legend>: Monthly</Legend></td></tr>
+            <tr><td><Legend>Date start</Legend></td><td><Legend>: </Legend></td></tr>
+            <tr><td><Legend>Period end</Legend></td><td><Legend>: </Legend></td></tr> 
           </table>
           {loading && <span>Loading data...</span>}
           {error && <span>Error: {error.message}</span>}

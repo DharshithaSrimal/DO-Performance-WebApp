@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable, DataTableCell, TableHead, DataTableRow, DataTableColumnHeader, TableBody } from '@dhis2-ui/table';
 import { SingleSelect, SingleSelectOption } from '@dhis2/ui';
-import { Field, Input, Button } from '@dhis2/ui';
+import { Field, Input, Button, Legend } from '@dhis2/ui';
 
 const PerfomanceTable = ({ data }) => {
   const [selectedFormat, setSelectedFormat] = useState(null);
@@ -18,6 +18,12 @@ const PerfomanceTable = ({ data }) => {
   };
 
   const onSingleSelectChange = (selectedOption) => {
+    if (selectedOption) {
+      handleDownload(selectedOption.value);
+    }
+  };
+
+  const onSingleSelectChangePeriod = (selectedOption) => {
     if (selectedOption) {
       handleDownload(selectedOption.value);
     }
@@ -53,12 +59,16 @@ const PerfomanceTable = ({ data }) => {
   return (
     <>
       <div>
+        <br></br>
         <table>
           <tr>
+            <td><Legend>Development Officer</Legend></td>
+            <td><Legend>Download</Legend></td>
+            <td><Legend>Period</Legend></td>
+          </tr>
+          <tr>
             <td>
-              <Field
-                  helpText="Search Development Officer"
-                  label="Development Officer">
+              <Field>
                   <Input label="An input" name="input" onChange={onInputChange} />
               </Field>
             </td>
@@ -69,7 +79,10 @@ const PerfomanceTable = ({ data }) => {
               </SingleSelect>
             </td>
             <td>
-              <Button name="share" value="default"> Share </Button>
+              <SingleSelect label="Period" className="select" selected="daily" onChange={onSingleSelectChangePeriod} style={{ width: '30%' }}>
+                <SingleSelectOption label="Daily" value="daily" id="daily"/>
+                <SingleSelectOption label="Monthly" value="monthly" id="monthly"/>
+              </SingleSelect>
             </td>
           </tr>
         </table>
@@ -79,9 +92,9 @@ const PerfomanceTable = ({ data }) => {
         <TableHead>
           <DataTableRow>
             <DataTableCell></DataTableCell>
-            <DataTableCell colSpan={2}>Registration and screening</DataTableCell>
-            <DataTableCell colSpan={2}>Referral and clinic visits</DataTableCell>
-            <DataTableCell colSpan={6}>Follow-ups</DataTableCell>
+            <DataTableCell colSpan={2} align="center">Registration and screening</DataTableCell>
+            <DataTableCell colSpan={2} align="center">Referral and clinic visits</DataTableCell>
+            <DataTableCell colSpan={6} align="center">Follow-ups</DataTableCell>
           </DataTableRow>
           <DataTableRow>
             <DataTableColumnHeader>Development Officer</DataTableColumnHeader>
@@ -98,13 +111,21 @@ const PerfomanceTable = ({ data }) => {
           </DataTableRow>
         </TableHead>
         <TableBody>
-          {filteredData.map((row) => (
-            <DataTableRow key={row[0]}>
-              {row.map((cell, index) => (
-                <DataTableCell key={index}>{cell}</DataTableCell>
-              ))}
-            </DataTableRow>
-          ))}
+        {filteredData.map((row) => (
+              <DataTableRow key={row[0]}>
+                <DataTableCell>{row[0]}</DataTableCell>
+                <DataTableCell align="center">{row[1]}</DataTableCell>
+                <DataTableCell align="center">{row[4]}</DataTableCell>
+                <DataTableCell align="center">{row[5]}</DataTableCell>
+                <DataTableCell align="center">{row[6]}</DataTableCell>
+                <DataTableCell align="center"></DataTableCell>
+                <DataTableCell align="center"></DataTableCell>
+                <DataTableCell align="center"></DataTableCell>
+                <DataTableCell align="center"></DataTableCell>
+                <DataTableCell align="center"></DataTableCell>
+                <DataTableCell align="center"></DataTableCell>
+              </DataTableRow>
+            ))}
         </TableBody>
       </DataTable>
     </>
