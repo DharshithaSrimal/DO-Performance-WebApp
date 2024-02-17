@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import { DataTable, DataTableCell, TableHead, DataTableRow, DataTableColumnHeader, TableBody } from '@dhis2-ui/table';
 import { SingleSelect, SingleSelectOption } from '@dhis2/ui';
 import { Field, Input, Button, Legend } from '@dhis2/ui';
+import { useReactToPrint } from 'react-to-print';
 
 const PerfomanceTable = ({ data }) => {
   const [selectedFormat, setSelectedFormat] = useState(null);
   const [filteredData, setFilteredData] = useState(data);
+  const componentRef = useRef();
 
   const handleDownload = (format) => {
     setSelectedFormat(format);
@@ -18,14 +20,14 @@ const PerfomanceTable = ({ data }) => {
   };
 
   const onSingleSelectChange = (selectedOption) => {
-    if (selectedOption) {
-      handleDownload(selectedOption.value);
+    if (selectedOption.selected) {
+      handleDownload(selectedOption.selected);
     }
   };
 
   const onSingleSelectChangePeriod = (selectedOption) => {
-    if (selectedOption) {
-      handleDownload(selectedOption.value);
+    if (selectedOption.selected) {
+      handleDownload(selectedOption.selected);
     }
   };
 
@@ -42,7 +44,12 @@ const PerfomanceTable = ({ data }) => {
   const generatePDF = () => {
     // Implement your PDF generation logic using your data and formatting requirements
     alert('PDF generation triggered!');
+    handlePrint();
   };
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const generateExcel = () => {
     // Implement your Excel generation logic using your data and formatting requirements
@@ -88,6 +95,10 @@ const PerfomanceTable = ({ data }) => {
         </table>
       </div>
 
+      <div style={{ display: selectedFormat === 'pdf' ? 'block' : 'none' }}>
+        <ComponentToPrint ref={componentRef} data={filteredData} />
+      </div>
+      
       <DataTable>
         <TableHead>
           <DataTableRow>
@@ -131,5 +142,36 @@ const PerfomanceTable = ({ data }) => {
     </>
   );
 };
+
+const ComponentToPrint = React.forwardRef(({ data }, ref) => (
+  <div ref={ref}>
+    <DataTable>
+      <TableHead>
+        <DataTableRow>
+          <DataTableColumnHeader>Development Officer</DataTableColumnHeader>
+          <DataTableColumnHeader>Clients registered</DataTableColumnHeader>
+          <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
+          <DataTableColumnHeader>Clients referred</DataTableColumnHeader>
+          <DataTableColumnHeader>Clients not referred</DataTableColumnHeader>
+          <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
+          <DataTableColumnHeader>Screenings overdue</DataTableColumnHeader>
+          <DataTableColumnHeader>Phone calls due</DataTableColumnHeader>
+          <DataTableColumnHeader>Phone calls overdue</DataTableColumnHeader>
+          <DataTableColumnHeader>Home visits due</DataTableColumnHeader>
+          <DataTableColumnHeader>Home visits overdue</DataTableColumnHeader>
+        </DataTableRow>
+      </TableHead>
+      <TableBody>
+        {data.map((row, index) => (
+          <DataTableRow key={index}>
+            {row.map((cell, cellIndex) => (
+              <DataTableCell key={cellIndex}>{cell}</DataTableCell>
+            ))}
+          </DataTableRow>
+        ))}
+      </TableBody>
+    </DataTable>
+  </div>
+));
 
 export default PerfomanceTable;
