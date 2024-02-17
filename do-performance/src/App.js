@@ -19,6 +19,9 @@ const DOPerformanceApp = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeMenuItem, setActiveMenuItem] = useState(1); 
+  const currentDate = new Date();
+  const formattedDate = currentDate.toLocaleDateString();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,8 +76,8 @@ const DOPerformanceApp = () => {
           <table>
             <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>: Kalutara DSD</Legend></td></tr>
             <tr><td><Legend>Period</Legend></td><td><Legend>: Monthly</Legend></td></tr>
-            <tr><td><Legend>Date start</Legend></td><td><Legend>: </Legend></td></tr>
-            <tr><td><Legend>Period end</Legend></td><td><Legend>: </Legend></td></tr> 
+            <tr><td><Legend>Date start</Legend></td><td><Legend>: {formattedDate}</Legend></td></tr>
+            <tr><td><Legend>Period end</Legend></td><td><Legend>: 2024.02.15</Legend></td></tr> 
           </table>
           {loading && <span>Loading data...</span>}
           {error && <span>Error: {error.message}</span>}
