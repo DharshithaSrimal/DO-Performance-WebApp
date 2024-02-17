@@ -118,9 +118,9 @@ const PerfomanceTable = ({ data }) => {
                 <DataTableCell align="center">{row[4]}</DataTableCell>
                 <DataTableCell align="center">{row[5]}</DataTableCell>
                 <DataTableCell align="center">{row[6]}</DataTableCell>
-                <DataTableCell align="center"></DataTableCell>
-                <DataTableCell align="center"></DataTableCell>
-                <DataTableCell align="center"></DataTableCell>
+                <DataTableCell align="center">0</DataTableCell>
+                <DataTableCell align="center">0</DataTableCell>
+                <DataTableCell align="center">0</DataTableCell>
                 <DataTableCell align="center"></DataTableCell>
                 <DataTableCell align="center"></DataTableCell>
                 <DataTableCell align="center"></DataTableCell>
