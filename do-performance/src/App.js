@@ -21,6 +21,11 @@ const DOPerformanceApp = () => {
   const [activeMenuItem, setActiveMenuItem] = useState(1); 
   const currentDate = new Date();
   const formattedDate = currentDate.toLocaleDateString();
+  const [selectedPeriod, setSelectedPeriod] = useState('daily'); // Default to daily
+  
+  const [startDate, setStartDate] = useState(formattedDate);
+  const [endDate, setEndDate] = useState(formattedDate);
+  const [filteredData, setFilteredData] = useState(null);
 
 
   useEffect(() => {
@@ -28,7 +33,6 @@ const DOPerformanceApp = () => {
       try {
         const userId = getUserIdFromSession();
         const userDetais = 'http://localhost:8084/dhis/api/users/'+userId;
-        console.log(userDetais);
         const [response1, response2] = await Promise.all([
           axios.get(userDetais, {
             auth: {
@@ -45,6 +49,7 @@ const DOPerformanceApp = () => {
         ]);
         setUserData(response1.data);
         setData(response2.data.listGrid.rows);
+        setFilteredData(response2.data.listGrid.rows); 
 
       } catch (error) {
         setError(error);
@@ -59,6 +64,35 @@ const DOPerformanceApp = () => {
   const handleMenuItemClick = (item) => {
     setActiveMenuItem(item);
   };
+
+  const handlePeriodChange = (period) => {
+    setSelectedPeriod(period);
+    const currentDate = new Date();
+    const formattedCurrentDate = currentDate.toLocaleDateString();
+    let newStartDate, newEndDate;
+
+    if (period === 'daily') {
+      newStartDate = formattedCurrentDate;
+      newEndDate = formattedCurrentDate;
+    } else if (period === 'monthly') {
+      const startDate = new Date(currentDate);
+      startDate.setDate(startDate.getDate() - 30);
+      newStartDate = startDate.toLocaleDateString();
+      newEndDate = formattedCurrentDate;
+    }
+
+    // Use startDate and endDate as needed in your application
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+
+    // Filter the data based on the new start date and end date
+    const filteredData = data.filter(row => {
+    const rowDate = new Date(row[11]);
+    return rowDate >= new Date(newStartDate) && rowDate <= new Date(newEndDate);
+  });
+  setFilteredData(filteredData);
+  };
+
 
   return (
     <main style={{ border: '1px solid grey', display: 'flex', height: '100%' }}>
@@ -75,13 +109,13 @@ const DOPerformanceApp = () => {
         }}>
           <table>
             <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>: Kalutara DSD</Legend></td></tr>
-            <tr><td><Legend>Period</Legend></td><td><Legend>: Monthly</Legend></td></tr>
-            <tr><td><Legend>Date start</Legend></td><td><Legend>: {formattedDate}</Legend></td></tr>
-            <tr><td><Legend>Period end</Legend></td><td><Legend>: 2024.02.15</Legend></td></tr> 
+            <tr><td><Legend>Period</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? 'Daily' : 'Monthly'}</Legend></td></tr>
+            <tr><td><Legend>Date start</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? startDate : startDate}</Legend></td></tr>
+            <tr><td><Legend>Period end</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? endDate : endDate}</Legend></td></tr> 
           </table>
           {loading && <span>Loading data...</span>}
           {error && <span>Error: {error.message}</span>}
-          {data && activeMenuItem === 1 && <PerfomanceTable data={data} />}
+          {data && activeMenuItem === 1 && <PerfomanceTable data={data} onPeriodChange={handlePeriodChange}/>}
           {data && activeMenuItem === 2 && <Tasks data={data} />}
         </section>
       </main>
