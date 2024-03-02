@@ -3,6 +3,7 @@ import { DataTable, DataTableCell, TableHead, DataTableRow, DataTableColumnHeade
 import { SingleSelect, SingleSelectOption } from '@dhis2/ui';
 import { Field, Input, Legend } from '@dhis2/ui';
 import { useReactToPrint } from 'react-to-print';
+import CalendarDatePicker from './CalendarDatePicker';
 
 const PerfomanceTable = ({ data, onPeriodChange  }) => {
   const [selectedFormat, setSelectedFormat] = useState(null);
@@ -107,6 +108,7 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
           <tr>
             <td><Legend>Development Officer</Legend></td>
             <td><Legend>Download</Legend></td>
+            <td><Legend>Date</Legend></td>
             <td><Legend>Period</Legend></td>
           </tr>
           <tr>
@@ -120,6 +122,9 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
                 <SingleSelectOption label="PDF" value="pdf" id="pdf"/>
                 <SingleSelectOption label="Excel" value="excel" id="excel"/>
               </SingleSelect>
+            </td>
+            <td>
+              <CalendarDatePicker></CalendarDatePicker>
             </td>
             <td>
               <SingleSelect label="Period" className="select" selected={selectedPeriod} onChange={onSingleSelectChangePeriod} style={{ width: '30%' }}>
