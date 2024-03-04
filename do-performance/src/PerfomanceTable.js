@@ -54,14 +54,12 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
       // Use startDate and endDate as needed in your application
       setStartDate(newStartDate);
       setEndDate(newEndDate);
-      console.log('aaa '+data);
       // Filter the data based on the new start date and end date
       const filteredData = data.filter(item => {
         const itemDate = item[11];
-        console.log('ccc '+itemDate);
         return itemDate >= newStartDate && itemDate <= newEndDate;
       });
-      console.log('bbb '+filteredData);
+
       // Update the filtered data state
       setFilteredData(filteredData);
     }
