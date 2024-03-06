@@ -7,7 +7,6 @@ import { Legend } from '@dhis2/ui';
 
 //const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/mb4ScGwNDBf/data?criteria=created_by_code:admin';
 const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/GB4zoRiLoor/data';
-const personalAccessToken = 'd2pat_YIzNjxr9tnNwx8Mda0wFexze1xoBP5bR0679556158';
 const getUserIdFromSession = () => {
   const userId = localStorage.getItem('dhis2.latestUser');
   return userId;
@@ -21,7 +20,7 @@ const DOPerformanceApp = () => {
   const [activeMenuItem, setActiveMenuItem] = useState(1); 
   const currentDate = new Date();
   const formattedDate = currentDate.toLocaleDateString();
-  const [selectedPeriod, setSelectedPeriod] = useState('daily'); // Default to daily
+  const [selectedPeriod, setSelectedPeriod] = useState('monthly'); // Default to daily
   
   const [startDate, setStartDate] = useState(formattedDate);
   const [endDate, setEndDate] = useState(formattedDate);
@@ -32,18 +31,18 @@ const DOPerformanceApp = () => {
     const fetchData = async () => {
       try {
         const userId = getUserIdFromSession();
-        const userDetais = 'http://localhost:8084/dhis/api/users/'+userId;
+        const userDetais = `${process.env.REACT_APP_SERVER_ENDPOINT}`+userId;
         const [response1, response2] = await Promise.all([
           axios.get(userDetais, {
             auth: {
-              username: 'admin',
-              password: 'district'
+              username: `${process.env.REACT_APP_UN}`,
+              password: `${process.env.REACT_APP_PW}`
             },
           }),
           axios.get(serverUrl, {
             auth: {
-              username: 'admin',
-              password: 'district'
+              username: `${process.env.REACT_APP_UN}`,
+              password: `${process.env.REACT_APP_PW}`
             },
           }),
         ]);
