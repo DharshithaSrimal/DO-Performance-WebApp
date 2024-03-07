@@ -5,8 +5,7 @@ import PerfomanceTable from './PerfomanceTable';
 import Tasks from './Tasks';
 import { Legend } from '@dhis2/ui';
 
-//const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/mb4ScGwNDBf/data?criteria=created_by_code:admin';
-const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/GB4zoRiLoor/data';
+const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/KmCU6GOhbvR/data';
 const getUserIdFromSession = () => {
   const userId = localStorage.getItem('dhis2.latestUser');
   return userId;
@@ -14,82 +13,123 @@ const getUserIdFromSession = () => {
 
 const DOPerformanceApp = () => {
   const [data, setData] = useState(null);
-  const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeMenuItem, setActiveMenuItem] = useState(1); 
+  const [activeMenuItem, setActiveMenuItem] = useState(1);
   const currentDate = new Date();
   const formattedDate = currentDate.toLocaleDateString();
-  const [selectedPeriod, setSelectedPeriod] = useState('monthly'); // Default to daily
-  
+  const [selectedPeriod, setSelectedPeriod] = useState('monthly');
+  const [dsd, setDsd] = useState('');
   const [startDate, setStartDate] = useState(formattedDate);
   const [endDate, setEndDate] = useState(formattedDate);
   const [filteredData, setFilteredData] = useState(null);
+  const startingTime = ' 00:00:00.000';
+  const endTime = ' 23:59:59.999';
+  const userId = getUserIdFromSession();
 
+  const transformDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const fetchData = async (period, startDate, endDate) => {
+
+    try {
+      const  response2 = await axios.get( `${process.env.REACT_APP_SERVER_ENDPOINT}`, {
+          params: {
+            filter: `created_date:lte:${startDate}`,
+            filter: `created_date:gte:${endDate}`
+          },
+          auth: {
+            username: `${process.env.REACT_APP_UN}`,
+            password: `${process.env.REACT_APP_PW}`
+          },
+        });
+        
+      setData(response2.data.listGrid.rows);
+      setFilteredData(response2.data.listGrid.rows);
+
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  const fetchDsd = async () => {
+    try { 
+      const response1 = await axios.get( `${process.env.REACT_APP_ORG_UNIT_GROUPS}`, {
+          auth: {
+            username: `${process.env.REACT_APP_UN}`,
+            password: `${process.env.REACT_APP_PW}`
+          },
+        });
+
+        if (response1.data) {
+          const foundUser = response1.data.listGrid.rows.find(row => {
+            const sharing = JSON.parse(row[1]);
+            return sharing.users && sharing.users[userId];
+          });
+
+          if (foundUser) {
+            setDsd(foundUser[0]);
+          }
+        }
+
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userId = getUserIdFromSession();
-        const userDetais = `${process.env.REACT_APP_SERVER_ENDPOINT}`+userId;
-        const [response1, response2] = await Promise.all([
-          axios.get(userDetais, {
-            auth: {
-              username: `${process.env.REACT_APP_UN}`,
-              password: `${process.env.REACT_APP_PW}`
-            },
-          }),
-          axios.get(serverUrl, {
-            auth: {
-              username: `${process.env.REACT_APP_UN}`,
-              password: `${process.env.REACT_APP_PW}`
-            },
-          }),
-        ]);
-        setUserData(response1.data);
-        setData(response2.data.listGrid.rows);
-        setFilteredData(response2.data.listGrid.rows); 
+    let initialStartDate = new Date(startDate);
+    let initialEndDate = new Date(startDate);
+    initialStartDate = currentDate.toISOString().split('T')[0];
+    initialEndDate.setMonth(initialEndDate.getMonth() - 2);
+    initialEndDate.setDate(initialEndDate.getDate());
+    initialEndDate = initialEndDate.toISOString().split('T')[0];
 
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    setStartDate(initialStartDate);
+    setEndDate(initialEndDate);
+    fetchData(selectedPeriod, initialStartDate, initialEndDate);
+    fetchDsd(); 
 
-    fetchData();
   }, []);
 
   const handleMenuItemClick = (item) => {
     setActiveMenuItem(item);
   };
 
-  const handlePeriodChange = (period) => {
-    setSelectedPeriod(period);
-    const currentDate = new Date();
-    const formattedCurrentDate = currentDate.toLocaleDateString();
-    let newStartDate, newEndDate;
-
+  const handlePeriodChange = (period, startDate, endDate) => {
+    const currentDate = new Date(startDate);
+    let newStartDate = new Date(currentDate);
+    let newEndDate = new Date(currentDate);
     if (period === 'daily') {
-      newStartDate = formattedCurrentDate;
-      newEndDate = formattedCurrentDate;
+      newStartDate.setDate(newStartDate.getDate() + 1);
+      newStartDate = newStartDate.toISOString().split('T')[0] + startingTime;
+      newEndDate.setDate(newEndDate.getDate());
+      newEndDate = newEndDate.toISOString().split('T')[0] + endTime;
     } else if (period === 'monthly') {
-      const startDate = new Date(currentDate);
-      startDate.setDate(startDate.getDate() - 30);
-      newStartDate = startDate.toLocaleDateString();
-      newEndDate = formattedCurrentDate;
+      newStartDate.setDate(newStartDate.getDate() + 1);
+      newStartDate = newStartDate.toISOString().split('T')[0] + startingTime;
+      newEndDate.setMonth(newEndDate.getMonth() - 2); // Subtract one month from the start date
+      newEndDate.setDate(newEndDate.getDate());
+      newEndDate = newEndDate.toISOString().split('T')[0] + endTime;
+
     }
+    const transformedStartDate = transformDate(newStartDate);
+    const transformedEndDate = transformDate(newEndDate);
+    setSelectedPeriod(period);
 
-    // Use startDate and endDate as needed in your application
-    setStartDate(newStartDate);
-    setEndDate(newEndDate);
-
-    // Filter the data based on the new start date and end date
-    const filteredData = data.filter(row => {
-    const rowDate = new Date(row[11]);
-    return rowDate >= new Date(newStartDate) && rowDate <= new Date(newEndDate);
-  });
-  setFilteredData(filteredData);
+    setStartDate(transformedStartDate);
+    setEndDate(transformedEndDate);
+    fetchData(period, transformedStartDate, transformedEndDate);
   };
 
 
@@ -106,21 +146,19 @@ const DOPerformanceApp = () => {
           flexGrow: 1,
           padding: 20,
         }}>
-          <table>
-            <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>: Kalutara DSD</Legend></td></tr>
-            <tr><td><Legend>Period</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? 'Daily' : 'Monthly'}</Legend></td></tr>
-            <tr><td><Legend>Date start</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? startDate : startDate}</Legend></td></tr>
-            <tr><td><Legend>Period end</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? endDate : endDate}</Legend></td></tr> 
-          </table>
-          {loading && <span>Loading data...</span>}
-          {error && <span>Error: {error.message}</span>}
-          {data && activeMenuItem === 1 && <PerfomanceTable data={data} onPeriodChange={handlePeriodChange}/>}
-          {data && activeMenuItem === 2 && <Tasks data={data} />}
-        </section>
-      </main>
-     );
-   }
-
-
+        <table>
+          <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>:{dsd}</Legend></td></tr>
+          <tr><td><Legend>Period</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? 'Daily' : 'Monthly'}</Legend></td></tr>
+          <tr><td><Legend>Date start</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? startDate : startDate}</Legend></td></tr>
+          <tr><td><Legend>Period end</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? endDate : endDate}</Legend></td></tr>
+        </table>
+        {loading && <span>Loading data...</span>}
+        {error && <span>Error: {error.message}</span>}
+        {data && activeMenuItem === 1 && <PerfomanceTable data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
+        {data && activeMenuItem === 2 && <Tasks data={data} />}
+      </section>
+    </main>
+  );
+}
 
 export default DOPerformanceApp;

@@ -5,7 +5,7 @@ import { Field, Input, Legend } from '@dhis2/ui';
 import { useReactToPrint } from 'react-to-print';
 import CalendarDatePicker from './CalendarDatePicker';
 
-const PerfomanceTable = ({ data, onPeriodChange  }) => {
+const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, transformedEndDate}) => {
   const [selectedFormat, setSelectedFormat] = useState(null);
   const [filteredData, setFilteredData] = useState(data);
   const componentRef = useRef();
@@ -14,6 +14,8 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
   const [startDate, setStartDate] = useState(formattedDate);
   const [endDate, setEndDate] = useState(formattedDate);
   const [selectedPeriod, setSelectedPeriod] = useState('monthly');
+  const startingTime = ' 00:00:00.000';
+  const endTime = ' 23:59:59.999';
 
   const handleDownload = (format) => {
     setSelectedFormat(format);
@@ -33,37 +35,27 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
 
   const onSingleSelectChangePeriod = (selectedOption) => {
     if (selectedOption.selected) {
-      setSelectedPeriod(selectedOption.selected);
-      onPeriodChange(selectedOption.selected);
-  
-      const currentDate = new Date();
-      let newStartDate, newEndDate;
-  
-      if (selectedOption.selected === 'daily') {
-        newStartDate = currentDate.toISOString().split('T')[0] + ' 00:00:00.000';
-        newEndDate = currentDate.toISOString().split('T')[0] + ' 23:59:59.999';
-      } else if (selectedOption.selected === 'monthly') {
-        const startDate = new Date(currentDate);
-        startDate.setDate(1);
-        const endDate = new Date(currentDate);
-        endDate.setMonth(endDate.getMonth() + 1);
-        endDate.setDate(0);
-        newStartDate = startDate.toISOString().split('T')[0] + ' 00:00:00.000';
-        newEndDate = endDate.toISOString().split('T')[0] + ' 23:59:59.999';
-      }
-      // Use startDate and endDate as needed in your application
-      setStartDate(newStartDate);
-      setEndDate(newEndDate);
-      // Filter the data based on the new start date and end date
-      const filteredData = data.filter(item => {
-        const itemDate = item[11];
-        return itemDate >= newStartDate && itemDate <= newEndDate;
-      });
+        setSelectedPeriod(selectedOption.selected);
+        
+        const newDate = new Date(startDate);
+        let newStartDate = new Date(newDate);
+        let newEndDate = new Date(newDate);
+        if (selectedOption.selected === 'daily') {
+            newStartDate = newDate.toISOString().split('T')[0] + startingTime;
+            newEndDate.setDate(newEndDate.getDate() - 2);
+            newEndDate = newEndDate.toISOString().split('T')[0] + endTime;
 
-      // Update the filtered data state
-      setFilteredData(filteredData);
+        } else if (selectedOption.selected === 'monthly') {
+            newStartDate = newDate.toISOString().split('T')[0] + startingTime;
+            newEndDate.setMonth(newEndDate.getMonth() - 2); // Subtract one month from the start date
+            newEndDate.setDate(newEndDate.getDate() - 2);
+            newEndDate = newEndDate.toISOString().split('T')[0] + endTime;
+            
+        }
+        onPeriodChange(selectedOption.selected, newStartDate, newEndDate);
+
     }
-  };
+};
 
   useEffect(() => {
     if (selectedFormat === 'pdf') {
@@ -71,9 +63,10 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
     } else if (selectedFormat === 'excel') {
       generateExcel();
     }
-    // Reset selected format for the next selection
     setSelectedFormat(null);
-  }, [selectedFormat]);
+
+  }, [selectedFormat, data]);
+
 
   const generatePDF = () => {
     handlePrint();
@@ -84,7 +77,6 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
   });
 
   const generateExcel = () => {
-    // Implement your Excel generation logic using your data and formatting requirements
     alert('Excel generation triggered!');
   };
 
@@ -92,11 +84,17 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
     const inputValue = do_name.value.toLowerCase();
     const filtered = data.filter(row => {
       const officerMatches = row[0].toLowerCase().includes(inputValue);
-      const dateMatches = row[11] >= startDate && row[11] <= endDate; // Assuming date is at index 11 in your data array, adjust if needed
-      return officerMatches && dateMatches;
+      return officerMatches;
     });
     setFilteredData(filtered);
   };
+  
+  const handleDateChange = (date) => {
+    setStartDate(date);
+    setEndDate(date);
+    onPeriodChange(selectedPeriod, date);
+};
+
 
   return (
     <>
@@ -118,11 +116,11 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
             <td>
               <SingleSelect label="Download" className="select" onChange={onSingleSelectChange}>
                 <SingleSelectOption label="PDF" value="pdf" id="pdf"/>
-                <SingleSelectOption label="Excel" value="excel" id="excel"/>
+                {/* <SingleSelectOption label="Excel" value="excel" id="excel"/> */}
               </SingleSelect>
             </td>
             <td>
-              <CalendarDatePicker></CalendarDatePicker>
+              <CalendarDatePicker onDateChange={handleDateChange} />
             </td>
             <td>
               <SingleSelect label="Period" className="select" selected={selectedPeriod} onChange={onSingleSelectChangePeriod} style={{ width: '30%' }}>
@@ -135,7 +133,7 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
       </div>
 
       <div style={{ display: selectedFormat === 'pdf' ? 'block' : 'none' }}>
-        <ComponentToPrint ref={componentRef} data={filteredData} />
+        <ComponentToPrint ref={componentRef} data={filteredData} dsd={dsd} transformedStartDate={transformedStartDate} transformedEndDate={transformedEndDate}/>
       </div>
 
       <DataTable>
@@ -161,8 +159,8 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
           </DataTableRow>
         </TableHead>
         <TableBody>
-        {filteredData.map((row) => (
-              <DataTableRow key={row[0]}>
+        {filteredData.map((row, index) => (
+              <DataTableRow key={index}>
                 <DataTableCell>{row[0]}</DataTableCell>
                 <DataTableCell align="center">{row[1]}</DataTableCell>
                 <DataTableCell align="center">{row[2]}</DataTableCell>
@@ -182,13 +180,13 @@ const PerfomanceTable = ({ data, onPeriodChange  }) => {
   );
 };
 
-const ComponentToPrint = React.forwardRef(({ data }, ref) => (
+const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, transformedEndDate }, ref) => (
   <div ref={ref}>
     <table>
-            <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>: </Legend></td></tr>
+            <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>: {dsd}</Legend></td></tr>
             <tr><td><Legend>Period</Legend></td><td><Legend>: </Legend></td></tr>
-            <tr><td><Legend>Date start</Legend></td><td><Legend>: </Legend></td></tr>
-            <tr><td><Legend>Period end</Legend></td><td><Legend>: </Legend></td></tr> 
+            <tr><td><Legend>Date start</Legend></td><td><Legend>: {transformedStartDate}</Legend></td></tr>
+            <tr><td><Legend>Period end</Legend></td><td><Legend>: {transformedEndDate}</Legend></td></tr> 
           </table>
     <DataTable>
       <TableHead>
