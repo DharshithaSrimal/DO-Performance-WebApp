@@ -65,7 +65,11 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
     }
     setSelectedFormat(null);
 
-  }, [selectedFormat, data]);
+  }, [selectedFormat]);
+
+  useEffect(()=>{
+    setFilteredData(data)
+  },[data])
 
 
   const generatePDF = () => {
@@ -181,7 +185,7 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
 };
 
 const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, transformedEndDate }, ref) => (
-  <div ref={ref}>
+  <div ref={ref} style={{ marginTop: '1in', marginLeft: '0.25in', marginRight: '0.25in' }}>
     <table>
             <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>: {dsd}</Legend></td></tr>
             <tr><td><Legend>Period</Legend></td><td><Legend>: </Legend></td></tr>

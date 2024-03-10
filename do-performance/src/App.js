@@ -5,7 +5,6 @@ import PerfomanceTable from './PerfomanceTable';
 import Tasks from './Tasks';
 import { Legend } from '@dhis2/ui';
 
-const serverUrl = 'http://localhost:8084/dhis/api/sqlViews/KmCU6GOhbvR/data';
 const getUserIdFromSession = () => {
   const userId = localStorage.getItem('dhis2.latestUser');
   return userId;
@@ -130,6 +129,7 @@ const DOPerformanceApp = () => {
     setStartDate(transformedStartDate);
     setEndDate(transformedEndDate);
     fetchData(period, transformedStartDate, transformedEndDate);
+
   };
 
 
@@ -137,7 +137,7 @@ const DOPerformanceApp = () => {
     <main style={{ border: '1px solid grey', display: 'flex', height: '100%' }}>
       <FlyoutMenu activeItem={activeMenuItem}>
         <MenuItem onClick={() => handleMenuItemClick(1)} label="DO Performance" />
-        <MenuItem onClick={() => handleMenuItemClick(2)} label="Tasks" />
+        {/* <MenuItem onClick={() => handleMenuItemClick(2)} label="Tasks" /> */}
       </FlyoutMenu>
       <section
         style={{
@@ -155,7 +155,7 @@ const DOPerformanceApp = () => {
         {loading && <span>Loading data...</span>}
         {error && <span>Error: {error.message}</span>}
         {data && activeMenuItem === 1 && <PerfomanceTable data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
-        {data && activeMenuItem === 2 && <Tasks data={data} />}
+        {/* {data && activeMenuItem === 2 && <Tasks data={data} />} */}
       </section>
     </main>
   );
