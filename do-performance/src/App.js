@@ -17,30 +17,19 @@ const DOPerformanceApp = () => {
   const [activeMenuItem, setActiveMenuItem] = useState(1);
   const currentDate = new Date();
   const formattedDate = currentDate.toLocaleDateString();
-  const [selectedPeriod, setSelectedPeriod] = useState('monthly');
   const [dsd, setDsd] = useState('');
   const [startDate, setStartDate] = useState(formattedDate);
   const [endDate, setEndDate] = useState(formattedDate);
   const [filteredData, setFilteredData] = useState(null);
-  const startingTime = ' 00:00:00.000';
-  const endTime = ' 23:59:59.999';
   const userId = getUserIdFromSession();
 
-  const transformDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
-
-  const fetchData = async (period, startDate, endDate) => {
+  const fetchData = async (startDate, endDate) => {
 
     try {
       const  response2 = await axios.get( `${process.env.REACT_APP_SERVER_ENDPOINT}`, {
           params: {
-            filter: `created_date:lte:${startDate}`,
-            filter: `created_date:gte:${endDate}`
+            filter: `created_date:lte:${endDate}`,
+            filter: `created_date:gte:${startDate}`
           },
           auth: {
             username: `${process.env.REACT_APP_UN}`,
@@ -89,14 +78,13 @@ const DOPerformanceApp = () => {
   useEffect(() => {
     let initialStartDate = new Date(startDate);
     let initialEndDate = new Date(startDate);
-    initialStartDate = currentDate.toISOString().split('T')[0];
-    initialEndDate.setMonth(initialEndDate.getMonth() - 2);
-    initialEndDate.setDate(initialEndDate.getDate());
+    initialStartDate = initialStartDate.toISOString().split('T')[0];
+    initialEndDate.setDate(initialEndDate.getDate() + 1);
     initialEndDate = initialEndDate.toISOString().split('T')[0];
 
     setStartDate(initialStartDate);
     setEndDate(initialEndDate);
-    fetchData(selectedPeriod, initialStartDate, initialEndDate);
+    fetchData(initialStartDate, initialEndDate);
     fetchDsd(); 
 
   }, []);
@@ -105,30 +93,10 @@ const DOPerformanceApp = () => {
     setActiveMenuItem(item);
   };
 
-  const handlePeriodChange = (period, startDate, endDate) => {
-    const currentDate = new Date(startDate);
-    let newStartDate = new Date(currentDate);
-    let newEndDate = new Date(currentDate);
-    if (period === 'daily') {
-      newStartDate.setDate(newStartDate.getDate() + 1);
-      newStartDate = newStartDate.toISOString().split('T')[0] + startingTime;
-      newEndDate.setDate(newEndDate.getDate());
-      newEndDate = newEndDate.toISOString().split('T')[0] + endTime;
-    } else if (period === 'monthly') {
-      newStartDate.setDate(newStartDate.getDate() + 1);
-      newStartDate = newStartDate.toISOString().split('T')[0] + startingTime;
-      newEndDate.setMonth(newEndDate.getMonth() - 2); // Subtract one month from the start date
-      newEndDate.setDate(newEndDate.getDate());
-      newEndDate = newEndDate.toISOString().split('T')[0] + endTime;
-
-    }
-    const transformedStartDate = transformDate(newStartDate);
-    const transformedEndDate = transformDate(newEndDate);
-    setSelectedPeriod(period);
-
-    setStartDate(transformedStartDate);
-    setEndDate(transformedEndDate);
-    fetchData(period, transformedStartDate, transformedEndDate);
+  const handlePeriodChange = (startDate, endDate) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    fetchData(startDate, endDate);
 
   };
 
@@ -147,10 +115,9 @@ const DOPerformanceApp = () => {
           padding: 20,
         }}>
         <table>
-          <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>:{dsd}</Legend></td></tr>
-          <tr><td><Legend>Period</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? 'Daily' : 'Monthly'}</Legend></td></tr>
-          <tr><td><Legend>Date start</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? startDate : startDate}</Legend></td></tr>
-          <tr><td><Legend>Period end</Legend></td><td><Legend>: {selectedPeriod === 'daily' ? endDate : endDate}</Legend></td></tr>
+          <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>: {dsd}</Legend></td></tr>
+          <tr><td><Legend>Start Date</Legend></td><td><Legend>: {startDate}</Legend></td></tr>
+          <tr><td><Legend>End Date</Legend></td><td><Legend>: {endDate}</Legend></td></tr>
         </table>
         {loading && <span>Loading data...</span>}
         {error && <span>Error: {error.message}</span>}

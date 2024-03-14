@@ -13,18 +13,9 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
   const formattedDate = currentDate.toLocaleDateString();
   const [startDate, setStartDate] = useState(formattedDate);
   const [endDate, setEndDate] = useState(formattedDate);
-  const [selectedPeriod, setSelectedPeriod] = useState('monthly');
-  const startingTime = ' 00:00:00.000';
-  const endTime = ' 23:59:59.999';
 
   const handleDownload = (format) => {
     setSelectedFormat(format);
-  };
-
-  const onChange = (selectedOption) => {
-    if (selectedOption) {
-      handleDownload(selectedOption.value);
-    }
   };
 
   const onSingleSelectChange = (selectedOption) => {
@@ -32,30 +23,6 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
       handleDownload(selectedOption.selected);
     }
   };
-
-  const onSingleSelectChangePeriod = (selectedOption) => {
-    if (selectedOption.selected) {
-        setSelectedPeriod(selectedOption.selected);
-        
-        const newDate = new Date(startDate);
-        let newStartDate = new Date(newDate);
-        let newEndDate = new Date(newDate);
-        if (selectedOption.selected === 'daily') {
-            newStartDate = newDate.toISOString().split('T')[0] + startingTime;
-            newEndDate.setDate(newEndDate.getDate() - 2);
-            newEndDate = newEndDate.toISOString().split('T')[0] + endTime;
-
-        } else if (selectedOption.selected === 'monthly') {
-            newStartDate = newDate.toISOString().split('T')[0] + startingTime;
-            newEndDate.setMonth(newEndDate.getMonth() - 2); // Subtract one month from the start date
-            newEndDate.setDate(newEndDate.getDate() - 2);
-            newEndDate = newEndDate.toISOString().split('T')[0] + endTime;
-            
-        }
-        onPeriodChange(selectedOption.selected, newStartDate, newEndDate);
-
-    }
-};
 
   useEffect(() => {
     if (selectedFormat === 'pdf') {
@@ -94,9 +61,19 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
   };
   
   const handleDateChange = (date) => {
-    setStartDate(date);
-    setEndDate(date);
-    onPeriodChange(selectedPeriod, date);
+    let rangeStartDate = new Date(date[0]);
+    rangeStartDate.setDate(rangeStartDate.getDate()+1);
+    rangeStartDate = rangeStartDate.toISOString().split('T')[0];
+    let rangeEndDate = date[1];
+    if (rangeEndDate){
+      rangeEndDate.setDate(rangeEndDate.getDate()+1);
+      rangeEndDate = rangeEndDate.toISOString().split('T')[0];
+      setStartDate(date);
+      setEndDate(date);
+      onPeriodChange(rangeStartDate, rangeEndDate);
+    }
+    
+    
 };
 
 
@@ -107,9 +84,9 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
         <table>
           <tr>
             <td><Legend>Development Officer</Legend></td>
+            <td><Legend>Date Range</Legend></td>
             <td><Legend>Download</Legend></td>
-            <td><Legend>Date</Legend></td>
-            <td><Legend>Period</Legend></td>
+            {/* <td><Legend>Period</Legend></td> */}
           </tr>
           <tr>
             <td>
@@ -118,20 +95,20 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
               </Field>
             </td>
             <td>
+              <CalendarDatePicker onDateChange={handleDateChange} />
+            </td>
+            <td>
               <SingleSelect label="Download" className="select" onChange={onSingleSelectChange}>
                 <SingleSelectOption label="PDF" value="pdf" id="pdf"/>
                 {/* <SingleSelectOption label="Excel" value="excel" id="excel"/> */}
               </SingleSelect>
             </td>
-            <td>
-              <CalendarDatePicker onDateChange={handleDateChange} />
-            </td>
-            <td>
+            {/* <td>
               <SingleSelect label="Period" className="select" selected={selectedPeriod} onChange={onSingleSelectChangePeriod} style={{ width: '30%' }}>
                 <SingleSelectOption label="Daily" value="daily" id="daily"/>
                 <SingleSelectOption label="Monthly" value="monthly" id="monthly"/>
               </SingleSelect>
-            </td>
+            </td> */}
           </tr>
         </table>
       </div>
@@ -188,7 +165,6 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
   <div ref={ref} style={{ marginTop: '1in', marginLeft: '0.25in', marginRight: '0.25in' }}>
     <table>
             <tr><td><Legend>Divisional Secretariat</Legend></td><td><Legend>: {dsd}</Legend></td></tr>
-            <tr><td><Legend>Period</Legend></td><td><Legend>: </Legend></td></tr>
             <tr><td><Legend>Date start</Legend></td><td><Legend>: {transformedStartDate}</Legend></td></tr>
             <tr><td><Legend>Period end</Legend></td><td><Legend>: {transformedEndDate}</Legend></td></tr> 
           </table>
