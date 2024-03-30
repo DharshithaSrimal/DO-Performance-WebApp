@@ -78,7 +78,6 @@ const DOPerformanceApp = () => {
   useEffect(() => {
     let initialStartDate = new Date(startDate);
     let initialEndDate = new Date(startDate);
-    initialStartDate.setMonth(initialEndDate.getMonth() - 2);
     initialStartDate = initialStartDate.toISOString().split('T')[0];
     initialEndDate.setDate(initialEndDate.getDate() + 1);
     initialEndDate = initialEndDate.toISOString().split('T')[0];
