@@ -16,7 +16,10 @@
   },
   "dependencies": {
     "@dhis2/app-runtime": "^3.10.2",
+    "react-csv": "^2.2.2",
     "react-datepicker": "^6.2.0",
-    "react-to-print": "^2.15.1"
+    "react-export-excel": "^0.5.3",
+    "react-to-print": "^2.15.1",
+    "xlsx": "^0.18.5"
   }
 }

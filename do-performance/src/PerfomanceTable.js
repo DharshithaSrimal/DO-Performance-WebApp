@@ -83,12 +83,18 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
         <br></br>
         <table>
           <tr>
+            <td><Legend>GN Devision</Legend></td>
             <td><Legend>Development Officer</Legend></td>
             <td><Legend>Date Range</Legend></td>
             <td><Legend>Download</Legend></td>
             {/* <td><Legend>Period</Legend></td> */}
           </tr>
           <tr>
+            <td>
+                <Field>
+                    <Input label="An input" name="input" />
+                </Field>
+            </td>
             <td>
               <Field>
                   <Input label="An input" name="input" onChange={onInputChange} />

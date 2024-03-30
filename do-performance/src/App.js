@@ -28,7 +28,7 @@ const DOPerformanceApp = () => {
     try {
       const  response2 = await axios.get( `${process.env.REACT_APP_SERVER_ENDPOINT}`, {
           params: {
-            filter: `created_date:lte:${endDate}`,
+            criteria: `created_date:lte:${endDate}`,
             filter: `created_date:gte:${startDate}`
           },
           auth: {
@@ -78,6 +78,7 @@ const DOPerformanceApp = () => {
   useEffect(() => {
     let initialStartDate = new Date(startDate);
     let initialEndDate = new Date(startDate);
+    initialStartDate.setMonth(initialEndDate.getMonth() - 2);
     initialStartDate = initialStartDate.toISOString().split('T')[0];
     initialEndDate.setDate(initialEndDate.getDate() + 1);
     initialEndDate = initialEndDate.toISOString().split('T')[0];
