@@ -54,6 +54,15 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
   const onInputChange = (do_name) => {
     const inputValue = do_name.value.toLowerCase();
     const filtered = data.filter(row => {
+      const officerMatches = row[1].toLowerCase().includes(inputValue);
+      return officerMatches;
+    });
+    setFilteredData(filtered);
+  };
+
+  const onGNChange = (gn_name) => {
+    const inputValue = gn_name.value.toLowerCase();
+    const filtered = data.filter(row => {
       const officerMatches = row[0].toLowerCase().includes(inputValue);
       return officerMatches;
     });
@@ -92,7 +101,7 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
           <tr>
             <td>
                 <Field>
-                    <Input label="An input" name="input" />
+                    <Input label="An input" name="input" onChange={onGNChange} />
                 </Field>
             </td>
             <td>
@@ -132,6 +141,7 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
             <DataTableCell colSpan={6} align="center">Follow-ups</DataTableCell>
           </DataTableRow>
           <DataTableRow>
+            <DataTableColumnHeader>GN devision</DataTableColumnHeader>
             <DataTableColumnHeader>Development Officer</DataTableColumnHeader>
             <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
             <DataTableColumnHeader>Clients screened</DataTableColumnHeader>
@@ -159,6 +169,7 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
                 <DataTableCell align="center">{row[8]}</DataTableCell>
                 <DataTableCell align="center">{row[9]}</DataTableCell>
                 <DataTableCell align="center">{row[10]}</DataTableCell>
+                <DataTableCell align="center">{row[11]}</DataTableCell>
               </DataTableRow>
             ))}
         </TableBody>
