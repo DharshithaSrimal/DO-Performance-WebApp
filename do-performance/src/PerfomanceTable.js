@@ -136,13 +136,16 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
         <TableHead>
           <DataTableRow>
             <DataTableCell></DataTableCell>
-            <DataTableCell colSpan={3} align="center">Registration and screening</DataTableCell>
+            <DataTableCell></DataTableCell>
+            <DataTableCell colSpan={5} align="center">Registration and screening</DataTableCell>
             <DataTableCell colSpan={1} align="center">Referral</DataTableCell>
             <DataTableCell colSpan={6} align="center">Follow-ups</DataTableCell>
           </DataTableRow>
           <DataTableRow>
             <DataTableColumnHeader>GN devision</DataTableColumnHeader>
             <DataTableColumnHeader>Development Officer</DataTableColumnHeader>
+            <DataTableColumnHeader>Clients Registered</DataTableColumnHeader>
+            <DataTableColumnHeader>Screening not required</DataTableColumnHeader>
             <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
             <DataTableColumnHeader>Clients screened</DataTableColumnHeader>
             <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
@@ -170,6 +173,8 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
                 <DataTableCell align="center">{row[9]}</DataTableCell>
                 <DataTableCell align="center">{row[10]}</DataTableCell>
                 <DataTableCell align="center">{row[11]}</DataTableCell>
+                <DataTableCell align="center">{row[12]}</DataTableCell>
+                <DataTableCell align="center">{row[13]}</DataTableCell>
               </DataTableRow>
             ))}
         </TableBody>
@@ -188,17 +193,20 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
     <DataTable>
       <TableHead>
         <DataTableRow>
-          <DataTableColumnHeader>Development Officer</DataTableColumnHeader>
-          <DataTableColumnHeader>Clients registered</DataTableColumnHeader>
-          <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
-          <DataTableColumnHeader>Clients referred</DataTableColumnHeader>
-          <DataTableColumnHeader>Clients not referred</DataTableColumnHeader>
-          <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
-          <DataTableColumnHeader>Screenings overdue</DataTableColumnHeader>
-          <DataTableColumnHeader>Phone calls due</DataTableColumnHeader>
-          <DataTableColumnHeader>Phone calls overdue</DataTableColumnHeader>
-          <DataTableColumnHeader>Home visits due</DataTableColumnHeader>
-          <DataTableColumnHeader>Home visits overdue</DataTableColumnHeader>
+        <DataTableColumnHeader>GN devision</DataTableColumnHeader>
+            <DataTableColumnHeader>Development Officer</DataTableColumnHeader>
+            <DataTableColumnHeader>Clients Registered</DataTableColumnHeader>
+            <DataTableColumnHeader>Screening not required</DataTableColumnHeader>
+            <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
+            <DataTableColumnHeader>Clients screened</DataTableColumnHeader>
+            <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
+            <DataTableColumnHeader>Clients referred</DataTableColumnHeader>
+            <DataTableColumnHeader>Phone calls due</DataTableColumnHeader>
+            <DataTableColumnHeader>Phone calls overdue</DataTableColumnHeader>
+            <DataTableColumnHeader>Phone calls completed</DataTableColumnHeader>
+            <DataTableColumnHeader>Home visits due</DataTableColumnHeader>
+            <DataTableColumnHeader>Home visits overdue</DataTableColumnHeader>
+            <DataTableColumnHeader>Home visits completed</DataTableColumnHeader>
         </DataTableRow>
       </TableHead>
       <TableBody>
@@ -215,6 +223,9 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
                 <DataTableCell align="center">{row[8]}</DataTableCell>
                 <DataTableCell align="center">{row[9]}</DataTableCell>
                 <DataTableCell align="center">{row[10]}</DataTableCell>
+                <DataTableCell align="center">{row[11]}</DataTableCell>
+                <DataTableCell align="center">{row[12]}</DataTableCell>
+                <DataTableCell align="center">{row[13]}</DataTableCell>
               </DataTableRow>
             ))}
         </TableBody>
