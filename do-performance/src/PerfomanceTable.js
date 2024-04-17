@@ -13,6 +13,8 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
   const formattedDate = currentDate.toLocaleDateString();
   const [startDate, setStartDate] = useState(formattedDate);
   const [endDate, setEndDate] = useState(formattedDate);
+  const [doInputValue, setDoInputValue] = useState();
+  const [gnInputValue, setGnInputValue] = useState();
 
   const handleDownload = (format) => {
     setSelectedFormat(format);
@@ -53,21 +55,42 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
 
   const onInputChange = (do_name) => {
     const inputValue = do_name.value.toLowerCase();
+    setDoInputValue(inputValue);
+    if(gnInputValue!=undefined){
     const filtered = data.filter(row => {
       const officerMatches = row[1].toLowerCase().includes(inputValue);
-      return officerMatches;
-    });
-    setFilteredData(filtered);
+        const gnMatches = row[0].toLowerCase().includes(gnInputValue);
+        return officerMatches && gnMatches;
+      });
+      setFilteredData(filtered);
+    } else{
+      const filtered = data.filter(row => {
+        const officerMatches = row[1].toLowerCase().includes(inputValue);
+        return officerMatches;
+        });
+        setFilteredData(filtered);
+    }
+    
   };
 
   const onGNChange = (gn_name) => {
     const inputValue = gn_name.value.toLowerCase();
-    const filtered = data.filter(row => {
-      const officerMatches = row[0].toLowerCase().includes(inputValue);
-      return officerMatches;
+    setGnInputValue(inputValue);
+    if(doInputValue!=undefined){
+      const filtered = data.filter(row => {
+      const gnMatches = row[0].toLowerCase().includes(inputValue);
+        const officerMatches = row[1].toLowerCase().includes(doInputValue);
+        return officerMatches && gnMatches;
     });
     setFilteredData(filtered);
-  };
+    } else{
+      const filtered = data.filter(row => {
+        const gnMatches = row[0].toLowerCase().includes(inputValue);
+        return gnMatches;
+      });
+      setFilteredData(filtered);
+    }
+  }
   
   const handleDateChange = (date) => {
     let rangeStartDate = new Date(date[0]);
@@ -81,8 +104,6 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
       setEndDate(date);
       onPeriodChange(rangeStartDate, rangeEndDate);
     }
-    
-    
 };
 
 

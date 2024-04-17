@@ -22,32 +22,7 @@ const DOPerformanceApp = () => {
   const [endDate, setEndDate] = useState(formattedDate);
   const [filteredData, setFilteredData] = useState(null);
   const userId = getUserIdFromSession();
-
-  const fetchData = async (startDate, endDate) => {
-
-    try {
-      const  response2 = await axios.get( `${process.env.REACT_APP_SERVER_ENDPOINT}`, {
-          params: {
-            criteria: `created_date:lte:${endDate}`,
-            filter: `created_date:gte:${startDate}`
-          },
-          auth: {
-            username: `${process.env.REACT_APP_UN}`,
-            password: `${process.env.REACT_APP_PW}`
-          },
-        });
-        
-      setData(response2.data.listGrid.rows);
-      setFilteredData(response2.data.listGrid.rows);
-
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
+  let dsd_;
   const fetchDsd = async () => {
     try { 
       const response1 = await axios.get( `${process.env.REACT_APP_ORG_UNIT_GROUPS}`, {
@@ -65,6 +40,7 @@ const DOPerformanceApp = () => {
 
           if (foundUser) {
             setDsd(foundUser[0]);
+            dsd_ = foundUser[0];
           }
         }
 
@@ -75,7 +51,28 @@ const DOPerformanceApp = () => {
     }
   };
 
-  useEffect(() => {
+  const fetchData = async (startDate, endDate, dsd_) => {
+    try {
+      const  response2 = await axios.get( `${process.env.REACT_APP_SERVER_ENDPOINT}`+ 
+      `?filter=created_date:ge:${startDate}&filter=created_date:le:${endDate}&filter=dsd:eq:${dsd_}`, 
+      {
+        auth: {
+          username: `${process.env.REACT_APP_UN}`,
+          password: `${process.env.REACT_APP_PW}`
+        },
+      });  
+      setData(response2.data.listGrid.rows);
+      setFilteredData(response2.data.listGrid.rows);
+
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(async () => {
+    await fetchDsd(); 
     let initialStartDate = new Date(startDate);
     let initialEndDate = new Date(startDate);
     initialStartDate = initialStartDate.toISOString().split('T')[0];
@@ -84,9 +81,7 @@ const DOPerformanceApp = () => {
 
     setStartDate(initialStartDate);
     setEndDate(initialEndDate);
-    fetchData(initialStartDate, initialEndDate);
-    fetchDsd(); 
-
+    fetchData(initialStartDate, initialEndDate, dsd_);
   }, []);
 
   const handleMenuItemClick = (item) => {
@@ -96,7 +91,7 @@ const DOPerformanceApp = () => {
   const handlePeriodChange = (startDate, endDate) => {
     setStartDate(startDate);
     setEndDate(endDate);
-    fetchData(startDate, endDate);
+    fetchData(startDate, endDate, dsd);
 
   };
 
