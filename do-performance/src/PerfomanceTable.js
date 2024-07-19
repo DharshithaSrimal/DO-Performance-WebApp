@@ -111,6 +111,7 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
     <>
       <div>
         <br></br>
+        <Legend>GN Devision</Legend>
         <table>
           <tr>
             <td><Legend>GN Devision</Legend></td>
