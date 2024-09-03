@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FlyoutMenu, MenuItem } from '@dhis2-ui/menu';
-import PerfomanceTable from './PerfomanceTable';
-import Tasks from './Tasks';
+import PerfomanceTableSummary from './PerfomanceTableSummary';
+import RegistrationsAndScreenings from './RegistrationsAndScreenings';
+import ReferralsAndVisits from './ReferralsAndVisits';
+import Followups from './Followups';
 import { Legend } from '@dhis2/ui';
 
 const getUserIdFromSession = () => {
@@ -99,7 +101,10 @@ const DOPerformanceApp = () => {
   return (
     <main style={{ border: '1px solid grey', display: 'flex', height: '100%' }}>
       <FlyoutMenu activeItem={activeMenuItem}>
-        <MenuItem onClick={() => handleMenuItemClick(1)} label="DO Performance" />
+        <MenuItem onClick={() => handleMenuItemClick(1)} label="Summary" />
+        <MenuItem onClick={() => handleMenuItemClick(2)} label="Registrations & Screenings" />
+        <MenuItem onClick={() => handleMenuItemClick(3)} label="Referrals & Visits" />
+        <MenuItem onClick={() => handleMenuItemClick(4)} label="Follow-ups" />
         {/* <MenuItem onClick={() => handleMenuItemClick(2)} label="Tasks" /> */}
       </FlyoutMenu>
       <section
@@ -116,7 +121,10 @@ const DOPerformanceApp = () => {
         </table>
         {loading && <span>Loading data...</span>}
         {error && <span>Error: {error.message}</span>}
-        {data && activeMenuItem === 1 && <PerfomanceTable data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
+        {data && activeMenuItem === 1 && <PerfomanceTableSummary data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
+        {data && activeMenuItem === 2 && <RegistrationsAndScreenings data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
+        {data && activeMenuItem === 3 && <ReferralsAndVisits data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
+        {data && activeMenuItem === 4 && <Followups data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
         {/* {data && activeMenuItem === 2 && <Tasks data={data} />} */}
       </section>
     </main>

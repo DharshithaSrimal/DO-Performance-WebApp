@@ -5,7 +5,7 @@ import { Field, Input, Legend } from '@dhis2/ui';
 import { useReactToPrint } from 'react-to-print';
 import CalendarDatePicker from './CalendarDatePicker';
 
-const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, transformedEndDate}) => {
+const Followups = ({ data, onPeriodChange, dsd, transformedStartDate, transformedEndDate}) => {
   const [selectedFormat, setSelectedFormat] = useState(null);
   const [filteredData, setFilteredData] = useState(data);
   const componentRef = useRef();
@@ -111,16 +111,17 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
     <>
       <div>
         <br></br>
-        <Legend>GN Devision</Legend>
         <table>
           <tr>
-            <td><Legend>GN Devision</Legend></td>
-            <td><Legend>Development Officer</Legend></td>
             <td><Legend>Date Range</Legend></td>
+            <td><Legend>GN Division</Legend></td>
+            <td><Legend>Screener name</Legend></td>
             <td><Legend>Download</Legend></td>
-            {/* <td><Legend>Period</Legend></td> */}
           </tr>
           <tr>
+            <td>
+              <CalendarDatePicker onDateChange={handleDateChange} />
+            </td>
             <td>
                 <Field>
                     <Input label="An input" name="input" onChange={onGNChange} />
@@ -130,9 +131,6 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
               <Field>
                   <Input label="An input" name="input" onChange={onInputChange} />
               </Field>
-            </td>
-            <td>
-              <CalendarDatePicker onDateChange={handleDateChange} />
             </td>
             <td>
               <SingleSelect label="Download" className="select" onChange={onSingleSelectChange}>
@@ -157,27 +155,12 @@ const PerfomanceTable = ({ data, onPeriodChange, dsd, transformedStartDate, tran
       <DataTable>
         <TableHead>
           <DataTableRow>
-            <DataTableCell></DataTableCell>
-            <DataTableCell></DataTableCell>
-            <DataTableCell colSpan={5} align="center">Registration and screening</DataTableCell>
-            <DataTableCell colSpan={1} align="center">Referral</DataTableCell>
-            <DataTableCell colSpan={6} align="center">Follow-ups</DataTableCell>
-          </DataTableRow>
-          <DataTableRow>
-            <DataTableColumnHeader>GN devision</DataTableColumnHeader>
-            <DataTableColumnHeader>Development Officer</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients Registered</DataTableColumnHeader>
-            <DataTableColumnHeader>Screening not required</DataTableColumnHeader>
-            <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients screened</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients referred</DataTableColumnHeader>
+            <DataTableColumnHeader>GN division</DataTableColumnHeader>
+            <DataTableColumnHeader>Screener name</DataTableColumnHeader>
             <DataTableColumnHeader>Phone calls due</DataTableColumnHeader>
             <DataTableColumnHeader>Phone calls overdue</DataTableColumnHeader>
-            <DataTableColumnHeader>Phone calls completed</DataTableColumnHeader>
             <DataTableColumnHeader>Home visits due</DataTableColumnHeader>
             <DataTableColumnHeader>Home visits overdue</DataTableColumnHeader>
-            <DataTableColumnHeader>Home visits completed</DataTableColumnHeader>
           </DataTableRow>
         </TableHead>
         <TableBody>
@@ -215,20 +198,12 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
     <DataTable>
       <TableHead>
         <DataTableRow>
-        <DataTableColumnHeader>GN devision</DataTableColumnHeader>
-            <DataTableColumnHeader>Development Officer</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients Registered</DataTableColumnHeader>
-            <DataTableColumnHeader>Screening not required</DataTableColumnHeader>
-            <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients screened</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients referred</DataTableColumnHeader>
+            <DataTableColumnHeader>GN division</DataTableColumnHeader>
+            <DataTableColumnHeader>Screener name</DataTableColumnHeader>
             <DataTableColumnHeader>Phone calls due</DataTableColumnHeader>
             <DataTableColumnHeader>Phone calls overdue</DataTableColumnHeader>
-            <DataTableColumnHeader>Phone calls completed</DataTableColumnHeader>
             <DataTableColumnHeader>Home visits due</DataTableColumnHeader>
             <DataTableColumnHeader>Home visits overdue</DataTableColumnHeader>
-            <DataTableColumnHeader>Home visits completed</DataTableColumnHeader>
         </DataTableRow>
       </TableHead>
       <TableBody>
@@ -255,4 +230,4 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
   </div>
 ));
 
-export default PerfomanceTable;
+export default Followups;
