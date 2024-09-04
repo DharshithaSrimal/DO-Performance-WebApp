@@ -159,17 +159,12 @@ const PerfomanceTableSummary = ({ data, onPeriodChange, dsd, transformedStartDat
             <DataTableColumnHeader>GN division</DataTableColumnHeader>
             <DataTableColumnHeader>Screener name</DataTableColumnHeader>
             <DataTableColumnHeader>Clients Registered</DataTableColumnHeader>
-            <DataTableColumnHeader>Screening not required</DataTableColumnHeader>
-            <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
+            <DataTableColumnHeader>Screening overdue</DataTableColumnHeader>
             <DataTableColumnHeader>Clients screened</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
             <DataTableColumnHeader>Clients referred</DataTableColumnHeader>
-            <DataTableColumnHeader>Phone calls due</DataTableColumnHeader>
             <DataTableColumnHeader>Phone calls overdue</DataTableColumnHeader>
-            <DataTableColumnHeader>Phone calls completed</DataTableColumnHeader>
-            <DataTableColumnHeader>Home visits due</DataTableColumnHeader>
             <DataTableColumnHeader>Home visits overdue</DataTableColumnHeader>
-            <DataTableColumnHeader>Home visits completed</DataTableColumnHeader>
+            <DataTableColumnHeader>Client visits</DataTableColumnHeader>
           </DataTableRow>
         </TableHead>
         <TableBody>
@@ -207,20 +202,15 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
     <DataTable>
       <TableHead>
         <DataTableRow>
-        <DataTableColumnHeader>GN division</DataTableColumnHeader>
+            <DataTableColumnHeader>GN division</DataTableColumnHeader>
             <DataTableColumnHeader>Screener name</DataTableColumnHeader>
             <DataTableColumnHeader>Clients Registered</DataTableColumnHeader>
-            <DataTableColumnHeader>Screening not required</DataTableColumnHeader>
-            <DataTableColumnHeader>Screenings due</DataTableColumnHeader>
+            <DataTableColumnHeader>Screening overdue</DataTableColumnHeader>
             <DataTableColumnHeader>Clients screened</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
             <DataTableColumnHeader>Clients referred</DataTableColumnHeader>
-            <DataTableColumnHeader>Phone calls due</DataTableColumnHeader>
             <DataTableColumnHeader>Phone calls overdue</DataTableColumnHeader>
-            <DataTableColumnHeader>Phone calls completed</DataTableColumnHeader>
-            <DataTableColumnHeader>Home visits due</DataTableColumnHeader>
             <DataTableColumnHeader>Home visits overdue</DataTableColumnHeader>
-            <DataTableColumnHeader>Home visits completed</DataTableColumnHeader>
+            <DataTableColumnHeader>Client visits</DataTableColumnHeader>
         </DataTableRow>
       </TableHead>
       <TableBody>
