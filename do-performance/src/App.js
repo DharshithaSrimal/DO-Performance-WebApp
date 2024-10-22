@@ -32,6 +32,7 @@ const DOPerformanceApp = () => {
             username: `${process.env.REACT_APP_UN}`,
             password: `${process.env.REACT_APP_PW}`
           },
+          timeout: 10000
         });
 
         if (response1.data) {
@@ -62,6 +63,7 @@ const DOPerformanceApp = () => {
           username: `${process.env.REACT_APP_UN}`,
           password: `${process.env.REACT_APP_PW}`
         },
+        timeout: 10000
       });  
       setData(response2.data.listGrid.rows);
       setFilteredData(response2.data.listGrid.rows);

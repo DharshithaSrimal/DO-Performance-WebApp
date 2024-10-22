@@ -1,4 +1,13 @@
 {
     "short_name": "Screener Performance Report",
-    "name": "Screener Performance Report"
+    "name": "Screener Performance Report",
+    "icons": [
+        { "16": "dhis2-app-icon.png" },
+        { "32": "dhis2-app-icon.png" },
+        { "48": "dhis2-app-icon.png" }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#235b8b",
+    "background_color": "#ffffff"
 }

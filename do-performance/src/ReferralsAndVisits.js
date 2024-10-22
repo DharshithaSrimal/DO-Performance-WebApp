@@ -113,16 +113,16 @@ const ReferralsAndVisits = ({ data, onPeriodChange, dsd, transformedStartDate, t
         <br></br>
         <table>
           <tr>
-            <td><Legend>Date Range</Legend></td>
+            {/* <td><Legend>Date Range</Legend></td> */}
             <td><Legend>GN Division</Legend></td>
             <td><Legend>Screener name</Legend></td>
             <td><Legend>Download</Legend></td>
-            {/* <td><Legend>Period</Legend></td> */}
+            
           </tr>
           <tr>
-            <td>
+            {/* <td>
               <CalendarDatePicker onDateChange={handleDateChange} />
-            </td>
+            </td> */}
             <td>
                 <Field>
                     <Input label="An input" name="input" onChange={onGNChange} />
@@ -136,15 +136,8 @@ const ReferralsAndVisits = ({ data, onPeriodChange, dsd, transformedStartDate, t
             <td>
               <SingleSelect label="Download" className="select" onChange={onSingleSelectChange}>
                 <SingleSelectOption label="PDF" value="pdf" id="pdf"/>
-                {/* <SingleSelectOption label="Excel" value="excel" id="excel"/> */}
               </SingleSelect>
             </td>
-            {/* <td>
-              <SingleSelect label="Period" className="select" selected={selectedPeriod} onChange={onSingleSelectChangePeriod} style={{ width: '30%' }}>
-                <SingleSelectOption label="Daily" value="daily" id="daily"/>
-                <SingleSelectOption label="Monthly" value="monthly" id="monthly"/>
-              </SingleSelect>
-            </td> */}
           </tr>
         </table>
       </div>
@@ -168,18 +161,9 @@ const ReferralsAndVisits = ({ data, onPeriodChange, dsd, transformedStartDate, t
               <DataTableRow key={index}>
                 <DataTableCell>{row[0]}</DataTableCell>
                 <DataTableCell align="center">{row[1]}</DataTableCell>
-                <DataTableCell align="center">{row[2]}</DataTableCell>
-                <DataTableCell align="center">{row[3]}</DataTableCell>
-                <DataTableCell align="center">{row[4]}</DataTableCell>
-                <DataTableCell align="center">{row[5]}</DataTableCell>
-                <DataTableCell align="center">{row[6]}</DataTableCell>
-                <DataTableCell align="center">{row[7]}</DataTableCell>
                 <DataTableCell align="center">{row[8]}</DataTableCell>
                 <DataTableCell align="center">{row[9]}</DataTableCell>
                 <DataTableCell align="center">{row[10]}</DataTableCell>
-                <DataTableCell align="center">{row[11]}</DataTableCell>
-                <DataTableCell align="center">{row[12]}</DataTableCell>
-                <DataTableCell align="center">{row[13]}</DataTableCell>
               </DataTableRow>
             ))}
         </TableBody>
@@ -210,18 +194,9 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
               <DataTableRow key={row[0]}>
                 <DataTableCell>{row[0]}</DataTableCell>
                 <DataTableCell align="center">{row[1]}</DataTableCell>
-                <DataTableCell align="center">{row[2]}</DataTableCell>
-                <DataTableCell align="center">{row[3]}</DataTableCell>
-                <DataTableCell align="center">{row[4]}</DataTableCell>
-                <DataTableCell align="center">{row[5]}</DataTableCell>
-                <DataTableCell align="center">{row[6]}</DataTableCell>
-                <DataTableCell align="center">{row[7]}</DataTableCell>
                 <DataTableCell align="center">{row[8]}</DataTableCell>
                 <DataTableCell align="center">{row[9]}</DataTableCell>
                 <DataTableCell align="center">{row[10]}</DataTableCell>
-                <DataTableCell align="center">{row[11]}</DataTableCell>
-                <DataTableCell align="center">{row[12]}</DataTableCell>
-                <DataTableCell align="center">{row[13]}</DataTableCell>
               </DataTableRow>
             ))}
         </TableBody>

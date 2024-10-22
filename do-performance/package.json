@@ -1,7 +1,7 @@
 {
   "name": "screener-performance-report",
   "version": "1.0.0",
-  "description": "",
+  "description": "Screener Performance Report",
   "license": "BSD-3-Clause",
   "private": true,
   "scripts": {

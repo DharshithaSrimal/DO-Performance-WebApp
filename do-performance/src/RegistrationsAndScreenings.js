@@ -113,16 +113,16 @@ const RegistrationsAndScreenings = ({ data, onPeriodChange, dsd, transformedStar
         <br></br>
         <table>
           <tr>
-            <td><Legend>Date Range</Legend></td>
+            {/* <td><Legend>Date Range</Legend></td> */}
             <td><Legend>GN Division</Legend></td>
             <td><Legend>Screener name</Legend></td>
             <td><Legend>Download</Legend></td>
             {/* <td><Legend>Period</Legend></td> */}
           </tr>
           <tr>
-            <td>
+            {/* <td>
               <CalendarDatePicker onDateChange={handleDateChange} />
-            </td>
+            </td> */}
             <td>
                 <Field>
                     <Input label="An input" name="input" onChange={onGNChange} />
@@ -163,7 +163,6 @@ const RegistrationsAndScreenings = ({ data, onPeriodChange, dsd, transformedStar
             <DataTableColumnHeader>Screenings overdue</DataTableColumnHeader>
             <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
             <DataTableColumnHeader>Not screened due to pre-screening outcome</DataTableColumnHeader>
-            <DataTableColumnHeader>Screening not required</DataTableColumnHeader>
             <DataTableColumnHeader>Screened</DataTableColumnHeader>
           </DataTableRow>
         </TableHead>
@@ -178,12 +177,6 @@ const RegistrationsAndScreenings = ({ data, onPeriodChange, dsd, transformedStar
                 <DataTableCell align="center">{row[5]}</DataTableCell>
                 <DataTableCell align="center">{row[6]}</DataTableCell>
                 <DataTableCell align="center">{row[7]}</DataTableCell>
-                <DataTableCell align="center">{row[8]}</DataTableCell>
-                <DataTableCell align="center">{row[9]}</DataTableCell>
-                <DataTableCell align="center">{row[10]}</DataTableCell>
-                <DataTableCell align="center">{row[11]}</DataTableCell>
-                <DataTableCell align="center">{row[12]}</DataTableCell>
-                <DataTableCell align="center">{row[13]}</DataTableCell>
               </DataTableRow>
             ))}
         </TableBody>
@@ -209,7 +202,6 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
             <DataTableColumnHeader>Screenings overdue</DataTableColumnHeader>
             <DataTableColumnHeader>Clients not consenting to screening</DataTableColumnHeader>
             <DataTableColumnHeader>Not screened due to pre-screening outcome</DataTableColumnHeader>
-            <DataTableColumnHeader>Screening not required</DataTableColumnHeader>
             <DataTableColumnHeader>Screened</DataTableColumnHeader>
         </DataTableRow>
       </TableHead>
@@ -224,12 +216,6 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
                 <DataTableCell align="center">{row[5]}</DataTableCell>
                 <DataTableCell align="center">{row[6]}</DataTableCell>
                 <DataTableCell align="center">{row[7]}</DataTableCell>
-                <DataTableCell align="center">{row[8]}</DataTableCell>
-                <DataTableCell align="center">{row[9]}</DataTableCell>
-                <DataTableCell align="center">{row[10]}</DataTableCell>
-                <DataTableCell align="center">{row[11]}</DataTableCell>
-                <DataTableCell align="center">{row[12]}</DataTableCell>
-                <DataTableCell align="center">{row[13]}</DataTableCell>
               </DataTableRow>
             ))}
         </TableBody>

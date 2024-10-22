@@ -173,17 +173,12 @@ const PerfomanceTableSummary = ({ data, onPeriodChange, dsd, transformedStartDat
                 <DataTableCell>{row[0]}</DataTableCell>
                 <DataTableCell align="center">{row[1]}</DataTableCell>
                 <DataTableCell align="center">{row[2]}</DataTableCell>
-                <DataTableCell align="center">{row[3]}</DataTableCell>
                 <DataTableCell align="center">{row[4]}</DataTableCell>
-                <DataTableCell align="center">{row[5]}</DataTableCell>
-                <DataTableCell align="center">{row[6]}</DataTableCell>
                 <DataTableCell align="center">{row[7]}</DataTableCell>
                 <DataTableCell align="center">{row[8]}</DataTableCell>
-                <DataTableCell align="center">{row[9]}</DataTableCell>
-                <DataTableCell align="center">{row[10]}</DataTableCell>
-                <DataTableCell align="center">{row[11]}</DataTableCell>
                 <DataTableCell align="center">{row[12]}</DataTableCell>
-                <DataTableCell align="center">{row[13]}</DataTableCell>
+                <DataTableCell align="center">{row[14]}</DataTableCell>
+                <DataTableCell align="center">{row[10]}</DataTableCell>
               </DataTableRow>
             ))}
         </TableBody>
@@ -219,17 +214,12 @@ const ComponentToPrint = React.forwardRef(({ data, dsd, transformedStartDate, tr
                 <DataTableCell>{row[0]}</DataTableCell>
                 <DataTableCell align="center">{row[1]}</DataTableCell>
                 <DataTableCell align="center">{row[2]}</DataTableCell>
-                <DataTableCell align="center">{row[3]}</DataTableCell>
                 <DataTableCell align="center">{row[4]}</DataTableCell>
-                <DataTableCell align="center">{row[5]}</DataTableCell>
-                <DataTableCell align="center">{row[6]}</DataTableCell>
                 <DataTableCell align="center">{row[7]}</DataTableCell>
                 <DataTableCell align="center">{row[8]}</DataTableCell>
-                <DataTableCell align="center">{row[9]}</DataTableCell>
-                <DataTableCell align="center">{row[10]}</DataTableCell>
-                <DataTableCell align="center">{row[11]}</DataTableCell>
                 <DataTableCell align="center">{row[12]}</DataTableCell>
-                <DataTableCell align="center">{row[13]}</DataTableCell>
+                <DataTableCell align="center">{row[14]}</DataTableCell>
+                <DataTableCell align="center">{row[10]}</DataTableCell>
               </DataTableRow>
             ))}
         </TableBody>
