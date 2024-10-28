@@ -117,7 +117,6 @@ const PerfomanceTableSummary = ({ data, onPeriodChange, dsd, transformedStartDat
             <td><Legend>GN Division</Legend></td>
             <td><Legend>Screener name</Legend></td>
             <td><Legend>Download</Legend></td>
-            {/* <td><Legend>Period</Legend></td> */}
           </tr>
           <tr>
             <td>
@@ -139,12 +138,6 @@ const PerfomanceTableSummary = ({ data, onPeriodChange, dsd, transformedStartDat
                 {/* <SingleSelectOption label="Excel" value="excel" id="excel"/> */}
               </SingleSelect>
             </td>
-            {/* <td>
-              <SingleSelect label="Period" className="select" selected={selectedPeriod} onChange={onSingleSelectChangePeriod} style={{ width: '30%' }}>
-                <SingleSelectOption label="Daily" value="daily" id="daily"/>
-                <SingleSelectOption label="Monthly" value="monthly" id="monthly"/>
-              </SingleSelect>
-            </td> */}
           </tr>
         </table>
       </div>
@@ -158,7 +151,7 @@ const PerfomanceTableSummary = ({ data, onPeriodChange, dsd, transformedStartDat
           <DataTableRow>
             <DataTableColumnHeader>GN division</DataTableColumnHeader>
             <DataTableColumnHeader>Screener name</DataTableColumnHeader>
-            <DataTableColumnHeader>Clients Registered</DataTableColumnHeader>
+            <DataTableColumnHeader>Clients registered</DataTableColumnHeader>
             <DataTableColumnHeader>Screening overdue</DataTableColumnHeader>
             <DataTableColumnHeader>Clients screened</DataTableColumnHeader>
             <DataTableColumnHeader>Clients referred</DataTableColumnHeader>

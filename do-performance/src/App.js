@@ -65,14 +65,37 @@ const DOPerformanceApp = () => {
         },
         timeout: 10000
       });  
-      setData(response2.data.listGrid.rows);
-      setFilteredData(response2.data.listGrid.rows);
+      const rows = response2.data.listGrid.rows;
+
+      // Process the data to merge duplicate rows
+      const mergedData = mergeDuplicateRows(rows);
+      setData(mergedData);
+      setFilteredData(mergedData);
 
     } catch (error) {
       setError(error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const mergeDuplicateRows = (rows) => {
+    const mergedData = {};
+  
+    rows.forEach(row => {
+      const key = `${row[0]}_${row[1]}`; // Combining org_unit and full_name as a key
+  
+      if (!mergedData[key]) {
+        mergedData[key] = [...row]; // Store the row if it's the first instance
+      } else {
+        // Merge numerical columns by summing them
+        for (let i = 2; i < row.length - 3; i++) {
+          mergedData[key][i] = (parseInt(mergedData[key][i], 10) || 0) + (parseInt(row[i], 10) || 0);
+        }
+      }
+    });
+    // Return the merged rows as an array
+    return Object.values(mergedData);
   };
 
   useEffect(async () => {
@@ -107,7 +130,6 @@ const DOPerformanceApp = () => {
         <MenuItem onClick={() => handleMenuItemClick(2)} label="Registrations & Screenings" />
         <MenuItem onClick={() => handleMenuItemClick(3)} label="Referrals & Visits" />
         <MenuItem onClick={() => handleMenuItemClick(4)} label="Follow-ups" />
-        {/* <MenuItem onClick={() => handleMenuItemClick(2)} label="Tasks" /> */}
       </FlyoutMenu>
       <section
         style={{
@@ -127,7 +149,6 @@ const DOPerformanceApp = () => {
         {data && activeMenuItem === 2 && <RegistrationsAndScreenings data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
         {data && activeMenuItem === 3 && <ReferralsAndVisits data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
         {data && activeMenuItem === 4 && <Followups data={data} onPeriodChange={handlePeriodChange} dsd={dsd}  transformedStartDate={startDate} transformedEndDate={endDate} />}
-        {/* {data && activeMenuItem === 2 && <Tasks data={data} />} */}
       </section>
     </main>
   );
