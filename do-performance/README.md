@@ -1,24 +1,36 @@
-This project was bootstrapped with [DHIS2 Application Platform](https://github.com/dhis2/app-platform).
+# Screener-Performance-Report-App
 
-## Available Scripts
+Screener Performance Report App
 
-In the project directory, you can run:
+The **Screener Performance Report** is a custom DHIS2 web application designed to display aggregated results of screenings conducted by screeners. This app provides insights into the performance and outcomes of screening activities.
 
-### `yarn start`
+## Getting Started
+
+### Prerequsits
+
+1. Log into DHIS2, then add 'DO Performance View' and 'View Orgunit Group With Users' as queries.
+2. Follow the instructions in Interoperability Layer Repo.
+
+### Running Locally
+
+1. First, update the `.env` file by providing the correct DHIS2 credentials.
+2. To run the app locally, execute the following command:
+
+```bash
+yarn start
+```
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Installing to DHIS2
 
-### `yarn test`
+1. First, update the `.env` file by providing the correct DHIS2 credentials.
+2. Generate the build by running the following command.
 
-Launches the test runner and runs all available tests found in `/src`.<br />
-
-See the section about [running tests](https://platform.dhis2.nu/#/scripts/test) for more information.
-
-### `yarn build`
+```bash
+yarn build
+```
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -26,20 +38,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.<br />
 A deployable `.zip` file can be found in `build/bundle`!
 
-See the section about [building](https://platform.dhis2.nu/#/scripts/build) for more information.
-
-### `yarn deploy`
-
-Deploys the built app in the `build` folder to a running DHIS2 instance.<br />
-This command will prompt you to enter a server URL as well as the username and password of a DHIS2 user with the App Management authority.<br/>
-You must run `yarn build` before running `yarn deploy`.<br />
-
-See the section about [deploying](https://platform.dhis2.nu/#/scripts/deploy) for more information.
-
-## Learn More
-
-You can learn more about the platform in the [DHIS2 Application Platform Documentation](https://platform.dhis2.nu/).
-
-You can learn more about the runtime in the [DHIS2 Application Runtime Documentation](https://runtime.dhis2.nu/).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. Log in to your DHIS2 instance.
+4. Navigate to App Management -> Manual Install.
+5. Upload the generated build file from the yarn build command.
